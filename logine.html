@@ -60,16 +60,19 @@
                 <span><a href="">欢 迎 进 入 EHANG 注 册 页 面</a></span>
                 <form action="">
                      <div class="zhuce">
-                         <p>用  户  名:</p><input type="text" placeholder="请输入用户名"><br> 
+                         <p>用  户  名:</p><input type="text" id="username" placeholder="请输入用户名"><br> 
                          <p>手机号码:</p><input type="text" placeholder="请输入手机号"><br>  
-                         <p>密        码:</p><input type="text" placeholder="请输入密码"><br>  
+                         <p>密        码:</p><input type="text" id="userpass" placeholder="请输入密码"><br>  
                          <p>验  证  码:</p><input type="text" placeholder="请输入验证码" class="yanzh">
                          <input type="submit" value="获取验证码" class="tijiao"><br>  
-                         <input type="submit" value="立即注册" class="ljzc"> 
+                         <input  id="btnReg" type="button" value="立即注册" class="ljzc"> 
+                         <div id="messageBox">
+                        </div>
                      </div>
                 </form>
             </div>  
         </div>
+
 
 
 
@@ -150,3 +153,82 @@
     
 </body>
 </html>
+<script>
+
+    $("#btnReg").onclick = function(){
+        //1、
+        let xhr = new XMLHttpRequest();
+    
+        xhr.open("post","regSave.php",true);
+    
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState==4 && xhr.status==200){
+                if(xhr.responseText=="-1"){
+                    $("#messageBox").style.color ="red";
+                    $("#messageBox").innerHTML ="用户名被人使用";
+                }else if(xhr.responseText=="0"){
+                    $("#messageBox").style.color ="red";
+                    $("#messageBox").innerHTML ="注册失败";
+                }else if(xhr.responseText=="1"){
+                    $("#messageBox").style.color ="greenyellow";
+                    $("#messageBox").innerHTML ="注册成功，请<a href='login.html'>登录</a>";
+                }
+            }
+        }
+        //post方式：设置请求头
+        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        //post方式：把传给服务器端数据（键值对）放在send函数的参数里。
+        let sendstr = `username=${$("#username").value}&userpass=${$("#userpass").value}`;
+        xhr.send(sendstr);
+    
+    }
+    
+    
+    
+    
+    
+    
+    function checkuser(obj){
+        let xhr =new XMLHttpRequest();
+    
+        //2 设置请求参数
+        xhr.open("get","checkuser.php?username="+$("#username").value,true);
+    
+        //3 设置回调函数
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState==4 && xhr.status==200){
+                //5 接收请求
+                obj.nextElementSibling.innerHTML =  xhr.responseText;
+            }
+        }
+        //4 发送请求
+        xhr.send();
+    
+    }
+    
+    
+    
+    function check(){
+        //非空判断：
+        if($("#username").value=="" || $("#userpass").value=="" || $("#checkpass").value==""){
+            alert("亲，请把带星号的都输入了");
+            return false;//阻止浏览器的默认行为
+        }
+        //判断用户名是否符合规则
+    
+        //判断密码和重复密码是否一致。
+    
+        
+    }
+    
+    function $(str){
+        if(str.charAt(0)=="#"){
+            return document.getElementById(str.substring(1));
+        }else if(str.charAt(0)=="."){
+            return document.getElementsByClassName(str.substring(1));
+        }else{
+            return document.getElementsByTagName(str);
+        }
+    }	
+    
+ </script>
