@@ -160,26 +160,4 @@
 
 </body>
 </html>
-<script type="text/javascript">
-	let listone = document.getElementsByClassName("a");
-	let test = document.getElementsByClassName("test");
-	for (let i = 0; i < listone.length; i++) {
-		(function(i) {
-			listone[i].onmouseover = function() {
-				for (var j = 0; j < test.length; j++) {
-					test[j].style.display = "none";
-				}
-				test[i].style.display = "block";
-			}
-		}(i))
-		listone[i].onmouseout = function() {
-			test[i].style.display = "none";
-		}
-		test[i].onmouseover=function(){
-			test[i].style.display = "block";
-		}
-		test[i].onmouseout=function(){
-			test[i].style.display = "none";
-		}
-	}
-</script>
+
